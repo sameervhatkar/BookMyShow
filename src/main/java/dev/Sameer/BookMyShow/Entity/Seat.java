@@ -15,8 +15,8 @@ public class Seat extends BaseModel {
     private String seatNumber;
     @Enumerated(EnumType.STRING)
     private SeatType seatType;
-    private int row;
-    private int col;
+    private int matRow;
+    private int matCol;
     @Enumerated(EnumType.STRING)
     private SeatStatus seatStatus;
 }

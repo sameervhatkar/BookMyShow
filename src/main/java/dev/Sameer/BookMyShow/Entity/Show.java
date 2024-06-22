@@ -20,6 +20,15 @@ public class Show extends BaseModel {
     private Movie movie;
     @ManyToOne
     private Auditorium auditorium;
+    @ManyToOne
+    private Theatre theatre;
     @OneToMany
     private List<ShowSeat> showSeatList;
 }
+
+
+/*
+    Show        Theatre
+    1               1
+     M               1
+ */
