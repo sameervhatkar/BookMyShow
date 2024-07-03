@@ -3,9 +3,11 @@ package dev.Sameer.BookMyShow.Mapper;
 import dev.Sameer.BookMyShow.DTO.MovieRequestDTO;
 import dev.Sameer.BookMyShow.DTO.MovieResponseDTO;
 import dev.Sameer.BookMyShow.DTO.ShowResponseDTO;
+import dev.Sameer.BookMyShow.DTO.UserResponseDTO;
 import dev.Sameer.BookMyShow.Entity.Actor;
 import dev.Sameer.BookMyShow.Entity.Movie;
 import dev.Sameer.BookMyShow.Entity.Show;
+import dev.Sameer.BookMyShow.Entity.User;
 import dev.Sameer.BookMyShow.Enum.MovieFeature;
 
 import java.sql.Array;
@@ -45,5 +47,13 @@ public class EntityToDTOMapper {
         showResponseDTO.setTheatreName(show.getTheatre().getTheatreName());
         showResponseDTO.setAuditoriumName(show.getAuditorium().getAudiName());
         return showResponseDTO;
+    }
+
+    public static UserResponseDTO convertUserEntityToUserDTO(User user) {
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setUserName(user.getUserName());
+        userResponseDTO.setUserEmail(user.getUserEmail());
+        userResponseDTO.setTicketList(user.getTicketList());
+        return userResponseDTO;
     }
 }

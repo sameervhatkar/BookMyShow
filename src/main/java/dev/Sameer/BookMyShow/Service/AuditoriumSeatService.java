@@ -28,10 +28,6 @@ public class AuditoriumSeatService {
     @Autowired
     private TheatreRepository theatreRepository;
 
-
-
-
-
     public Theatre fillingSeatInAuditorium(String theatreName, int noOfAuditorium) {
 
         List<Auditorium> auditoriumList = new ArrayList<>();
