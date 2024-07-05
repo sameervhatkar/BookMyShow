@@ -39,29 +39,22 @@ public class MovieService {
             }
         }
         movie.setMovieFeatureList(movieFeatures);
-
+        movieRepository.save(movie);
         List<Actor> actors = new ArrayList<>();
         for(String actorName : movieRequestDTO.getActorNameList()) {
             Actor actor = actorRepository.findActorByActorName(actorName);
             if (actor == null) {
-                Actor saveActor = new Actor();
-                saveActor.setActorName(actorName);
-                actorRepository.save(saveActor);
-                actors.add(saveActor);
+                actor = new Actor();
+                actor.setActorName(actorName);
+                actors.add(actor);
             } else {
                 actors.add(actor);
             }
+            actor.setMovieList(List.of(movie));
+            actorRepository.save(actor);
         }
         movie.setActorList(actors);
         movieRepository.save(movie);
-        for(String actorName : movieRequestDTO.getActorNameList()) {
-            Actor actor = actorRepository.findActorByActorName(actorName);
-            List<Movie> movieList = actor.getMovieList();
-            movieList.add(movie);
-            actor.setMovieList(movieList);
-            actorRepository.save(actor);
-        }
-
         return EntityToDTOMapper.convertMovieEntityToDTO(movie);
     }
 }

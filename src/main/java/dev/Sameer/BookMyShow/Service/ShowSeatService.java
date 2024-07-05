@@ -27,10 +27,8 @@ public class ShowSeatService {
         return showSeatRepository.save(showseat);
     }
 
-    public void generateShowSeat(Show show, Seat seat) {
+    public ShowSeat generateShowSeat(Show show, Seat seat) {
         ShowSeat showSeat = new ShowSeat();
-        showSeat.setShow(show);
-        showSeat.setSeat(seat);
         if(isShowStartTimeBetween9amAnd12(show.getShowStartTime())) {
             if(seat.getSeatType().equals(SeatType.SILVER))
                 showSeat.setPrice(90);
@@ -64,8 +62,11 @@ public class ShowSeatService {
             else if(seat.getSeatType().equals(SeatType.PLATINUM))
                 showSeat.setPrice(270);
         }
+        showSeat.setSeat(seat);
+        showSeat.setShow(show);
         showSeat.setShowSeatStatus(ShowSeatStatus.AVAILABLE);
         showSeatRepository.save(showSeat);
+        return showSeat;
     }
 
     public static boolean isShowStartTimeBetween9amAnd12(LocalDateTime showStartTime) {

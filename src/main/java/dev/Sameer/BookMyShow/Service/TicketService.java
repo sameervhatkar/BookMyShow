@@ -1,5 +1,6 @@
 package dev.Sameer.BookMyShow.Service;
 
+import dev.Sameer.BookMyShow.DTO.BookTicketResponseDTO;
 import dev.Sameer.BookMyShow.Entity.Show;
 import dev.Sameer.BookMyShow.Entity.ShowSeat;
 import dev.Sameer.BookMyShow.Entity.Ticket;
@@ -26,25 +27,31 @@ public class TicketService {
     @Autowired
     private ShowSeatService showSeatService;
 
-    public Ticket bookTicket(List<Integer> showSeatIds, User user) {
+    public BookTicketResponseDTO bookTicket(List<Integer> showSeatIds, User user) {
         checkAndLockedSeat(showSeatIds);
         if(startPayment(showSeatIds)) {
             Ticket ticket = new Ticket();
             ticket.setBookingTime(LocalDateTime.now());
             List<ShowSeat> showSeatList = new ArrayList<>();
             Show show = null;
+            double totalAmount = 0.0;
             for(int ids : showSeatIds) {
                 ShowSeat showSeat = showSeatService.getShowSeat(ids);
                 show = showSeat.getShow();
                 showSeat.setShowSeatStatus(ShowSeatStatus.BOOKED);
                 showSeatList.add(showSeat);
+                totalAmount += showSeat.getPrice();
                 showSeatService.saveShowSeat(showSeat);
             }
             ticket.setShowSeatList(showSeatList);
             ticket.setShow(show);
+            ticket.setTicketAmount(totalAmount);
             ticket.setTicketStatus(TicketStatus.BOOKED);
             ticketRepository.save(ticket);
-            return ticket;
+            BookTicketResponseDTO bookTicketResponseDTO = new BookTicketResponseDTO();
+            bookTicketResponseDTO.setShowSeatIds(showSeatIds);
+            bookTicketResponseDTO.setTotalAmount(totalAmount);
+            return bookTicketResponseDTO;
         }
 
         return null;
